@@ -314,3 +314,97 @@ function updateProFeatures() {
         if (el.contains(logoUpload)) logoUpload.disabled = !isPro;
     });
 }
+
+// === MOBILE RESPONSIVENESS ENHANCEMENTS ===
+// Makes your app feel fast, native, and perfectly responsive on phones
+
+// 1. Remove 300ms tap delay on mobile (makes buttons feel instant)
+(function () {
+    if ('addEventListener' in document) {
+        document.addEventListener('DOMContentLoaded', function () {
+            // FastClick-like behavior without external library
+            let touchStartX = 0;
+            document.body.addEventListener('touchstart', function (e) {
+                touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+
+            document.body.addEventListener('touchend', function (e) {
+                if (!e.target.closest || !e.target.closest('a, button, input, select, textarea')) return;
+                const touchEndX = e.changedTouches[0].clientX;
+                // Only trigger if no significant swipe
+                if (Math.abs(touchEndX - touchStartX) < 10) {
+                    e.target.click();
+                }
+            }, { passive: true });
+        });
+    }
+})();
+
+// 2. Improve form inputs on mobile
+document.addEventListener('DOMContentLoaded', () => {
+    // Fix iOS zoom on input focus
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            document.documentElement.style.setProperty('--viewport-height', window.innerHeight + 'px');
+        });
+
+        // Better color picker on mobile
+        if (input.type === 'color') {
+            input.style.width = '100%';
+            input.style.height = '50px';
+            input.style.border = 'none';
+            input.style.borderRadius = '12px';
+            input.style.cursor = 'pointer';
+        }
+
+        // File input styling for mobile
+        if (input.type === 'file') {
+            input.style.opacity = '0';
+            input.style.position = 'absolute';
+            input.style.width = '100%';
+            input.style.height = '100%';
+            input.style.cursor = 'pointer';
+        }
+    });
+
+    // Make range slider thumb larger on touch devices
+    const range = document.querySelector('#size');
+    if (range) {
+        range.style.height = '8px';
+        range.style.borderRadius = '8px';
+        range.style.background = '#334155';
+    }
+
+    // Touch-friendly buttons
+    document.querySelectorAll('button, .btn').forEach(btn => {
+        btn.style.minHeight = '48px';
+        btn.style.touchAction = 'manipulation'; // Better tap response
+    });
+});
+
+// 3. Dynamic viewport height fix for mobile address bar
+(function () {
+    const setVH = () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', () => {
+        setTimeout(setVH, 200);
+    });
+})();
+
+// 4. Smooth scrolling polyfill for older mobile browsers
+if ('scrollBehavior' in document.documentElement.style === false) {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}

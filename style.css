@@ -595,3 +595,50 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 }
+/* Mobile-first touch enhancements */
+html {
+    -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight */
+}
+
+button, .btn, input, select, textarea {
+    touch-action: manipulation; /* Faster taps */
+}
+
+/* Larger touch targets */
+button, .btn, a, label, select {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Custom viewport unit fix */
+:root {
+    --vh: 100vh;
+}
+
+body, .container, main, .section {
+    min-height: var(--vh);
+}
+
+/* Better file input on mobile */
+.pro-locked {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.pro-locked::after {
+    content: "Upload Logo (Pro)";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--surface-2);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
