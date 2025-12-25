@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Pro — Professional QR Code Generator</title>
+    <meta name="description" content="Create beautiful, customizable QR codes for URLs, Wi-Fi, contact, and more. Professional tool trusted by businesses.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="#" class="logo-text">
+                <span class="logo-main">QR</span><span class="logo-accent">Pro</span>
+            </a>
+            <nav class="nav desktop-nav">
+                <a href="#generator" class="nav-link scroll-link">Generator</a>
+                <a href="#history" class="nav-link scroll-link">History</a>
+                <a href="#" id="pricing-trigger" class="nav-link">Pricing</a>
+            </nav>
+            <div class="header-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="upgrade-btn" class="btn btn-primary">Upgrade to Pro</button>
+                <button id="hamburger-btn" class="hamburger" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <nav class="mobile-nav">
+                <a href="#generator" class="nav-link scroll-link">Generator</a>
+                <a href="#history" class="nav-link scroll-link">History</a>
+                <a href="#" id="mobile-pricing" class="nav-link">Pricing</a>
+                <button id="mobile-upgrade" class="btn btn-primary full-width">Upgrade to Pro</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="generator" class="section">
+            <div class="container grid">
+                <div class="panel form-panel">
+                    <h2>Create QR Code</h2>
+                    <form id="qr-form">
+                        <!-- All form fields remain exactly the same -->
+                        <div class="field">
+                            <label for="type">Type</label>
+                            <select id="type">
+                                <option value="url">URL</option>
+                                <option value="text">Text</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Phone</option>
+                                <option value="wifi">Wi-Fi</option>
+                            </select>
+                        </div>
+                        <div id="dynamic-inputs"></div>
+
+                        <div class="section-title">Customization</div>
+                        <div class="field-group">
+                            <div class="field">
+                                <label>Foreground</label>
+                                <input type="color" id="fg-color" value="#ffffff">
+                            </div>
+                            <div class="field">
+                                <label>Background</label>
+                                <input type="color" id="bg-color" value="#020617">
+                            </div>
+                        </div>
+                        <div class="field checkbox">
+                            <label>
+                                <input type="checkbox" id="transparent-bg">
+                                Transparent Background
+                            </label>
+                        </div>
+                        <div class="field">
+                            <label>Size <span id="size-value">300px</span></label>
+                            <input type="range" id="size" min="200" max="800" value="300">
+                        </div>
+                        <div class="field">
+                            <label>Error Correction</label>
+                            <select id="error-level">
+                                <option value="L">Low (7%)</option>
+                                <option value="M" selected>Medium (15%)</option>
+                                <option value="Q">Quartile (25%)</option>
+                                <option value="H">High (30%)</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Dot Style</label>
+                            <select id="dot-style">
+                                <option value="square">Square</option>
+                                <option value="rounded" selected>Rounded</option>
+                            </select>
+                        </div>
+
+                        <div class="field pro-locked">
+                            <label>Center Logo (Pro)</label>
+                            <input type="file" id="logo-upload" accept="image/png,image/jpeg">
+                            <i class="fas fa-lock"></i>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="generate-btn" class="btn btn-primary">Generate</button>
+                            <button type="button" id="reset-btn" class="btn btn-secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel preview-panel">
+                    <h2>Live Preview</h2>
+                    <div id="qr-preview" class="qr-canvas"></div>
+                    <div class="download-actions">
+                        <button id="download-png" class="btn btn-outline">Download PNG</button>
+                        <button id="download-svg" class="btn btn-outline pro-locked">
+                            Download SVG (Pro)
+                            <i class="fas fa-lock"></i>
+                        </button>
+                        <button id="save-qr" class="btn btn-primary">Save to History</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="section">
+            <div class="container">
+                <h2>Saved QR Codes</h2>
+                <div id="history-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-left">
+                <a href="#" class="logo-text small">
+                    <span class="logo-main">QR</span><span class="logo-accent">Pro</span>
+                </a>
+                <p class="footer-tagline">Professional QR Code Generator</p>
+            </div>
+            <div class="footer-center">
+                <nav class="footer-nav">
+                    <a href="#generator" class="scroll-link">Generator</a>
+                    <a href="#history" class="scroll-link">History</a>
+                    <a href="#" id="footer-pricing">Pricing</a>
+                </nav>
+            </div>
+            <div class="footer-right">
+                <p>Developed by <a href="#" target="_blank" class="developer-link">David Akpan</a></p>
+                <p class="copyright">&copy; 2025 QR Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals remain the same -->
+    <div id="upgrade-modal" class="modal">
+        <div class="modal-content">
+            <h3>Upgrade to Pro</h3>
+            <p>Unlock SVG export, custom logos, unlimited history, and priority support.</p>
+            <div class="modal-actions">
+                <button id="upgrade-confirm" class="btn btn-primary">Upgrade Now (Demo)</button>
+                <button class="btn btn-secondary close-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pricing-modal" class="modal">
+        <div class="modal-content wide">
+            <h3>Pricing Plans</h3>
+            <div class="pricing-grid">
+                <div class="plan">
+                    <h4>Free</h4>
+                    <div class="price">Forever Free</div>
+                    <ul>
+                        <li>Unlimited QR generation</li>
+                        <li>PNG downloads</li>
+                        <li>Basic customization</li>
+                        <li>Limited history</li>
+                    </ul>
+                </div>
+                <div class="plan featured">
+                    <h4>Pro</h4>
+                    <div class="price">$9<span>/month</span></div>
+                    <ul>
+                        <li>Everything in Free</li>
+                        <li>SVG vector export</li>
+                        <li>Custom logo embedding</li>
+                        <li>Unlimited history</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="btn btn-primary">Start Pro Trial</button>
+                </div>
+            </div>
+            <button class="close-modal btn-icon"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
